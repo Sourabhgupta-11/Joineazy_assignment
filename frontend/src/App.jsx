@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
 import GroupManagement from './pages/GroupManagement';
+import Assignments from './pages/Assignments';
 
 export default function App() {
   const { user } = useAuth();
@@ -36,6 +37,15 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/assignments"
+        element={
+          <ProtectedRoute allowedRoles={['student']}>
+            <Assignments />
+          </ProtectedRoute>
+        }
+      />
+
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
