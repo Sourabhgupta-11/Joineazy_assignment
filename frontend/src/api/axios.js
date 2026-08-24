@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('joineazy_token');
+  const token = localStorage.getItem('groupsync_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -16,8 +16,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('joineazy_token');
-      localStorage.removeItem('joineazy_user');
+      localStorage.removeItem('groupsync_token');
+      localStorage.removeItem('groupsync_user');
       if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login';
       }
