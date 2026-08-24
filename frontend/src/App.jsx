@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
+import GroupManagement from './pages/GroupManagement';
 
 export default function App() {
   const { user } = useAuth();
@@ -24,6 +25,14 @@ export default function App() {
         element={
           <ProtectedRoute allowedRoles={['student']}>
             <StudentDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/groups"
+        element={
+          <ProtectedRoute allowedRoles={['student']}>
+            <GroupManagement />
           </ProtectedRoute>
         }
       />
