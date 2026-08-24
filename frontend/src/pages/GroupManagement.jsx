@@ -53,7 +53,7 @@ export default function GroupManagement() {
     try {
       await api.post(`/groups/${selectedGroup.id}/members`, { identifier: memberIdentifier.trim() });
       setMemberIdentifier('');
-      setNotice('Member added successfully.');
+      setNotice('Member added to the roster.');
       await loadGroupDetail(selectedGroup.id);
       await loadGroups();
     } catch (err) {
@@ -73,115 +73,117 @@ export default function GroupManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Navbar />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-2xl font-bold text-gray-800">My Groups</h1>
-        <p className="text-gray-500 mt-1">Create a group and add classmates by email or student ID.</p>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <p className="ledger-heading mb-2">Card catalog</p>
+        <h1 className="font-display text-3xl text-ink">My groups</h1>
+        <p className="text-ink-soft mt-1.5">Create a group and add classmates by email or student ID.</p>
 
-        <div className="grid lg:grid-cols-3 gap-6 mt-6">
+        <div className="grid lg:grid-cols-3 gap-6 mt-8">
           {/* Group list + create form */}
           <div className="lg:col-span-1 space-y-4">
-            <form onSubmit={handleCreateGroup} className="bg-white border border-gray-200 rounded-xl p-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Create a new group</label>
+            <form onSubmit={handleCreateGroup} className="card-index">
+              <label className="field-label">New group</label>
               <div className="flex gap-2">
                 <input
                   value={newGroupName}
                   onChange={(e) => setNewGroupName(e.target.value)}
                   placeholder="e.g. Team Alpha"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="field-input"
                 />
-                <button
-                  type="submit"
-                  disabled={creating}
-                  className="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:opacity-60"
-                >
+                <button type="submit" disabled={creating} className="btn-primary shrink-0 !px-4">
                   Add
                 </button>
               </div>
             </form>
 
-            <div className="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
-              {groups.length === 0 && (
-                <p className="text-sm text-gray-500 p-4">No groups yet. Create one above.</p>
-              )}
-              {groups.map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => loadGroupDetail(g.id)}
-                  className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${
-                    selectedGroup?.id === g.id ? 'bg-brand-50' : ''
-                  }`}
-                >
-                  <p className="font-medium text-gray-800 text-sm">{g.name}</p>
-                  <p className="text-xs text-gray-500">{g.member_count} members</p>
-                </button>
-              ))}
+            <div className="card-index !p-0 !pl-0 overflow-hidden">
+              <div className="divide-y divide-line">
+                {groups.length === 0 && <p className="text-sm text-ink-faint p-4 pl-7">No groups yet.</p>}
+                {groups.map((g) => (
+                  <button
+                    key={g.id}
+                    onClick={() => loadGroupDetail(g.id)}
+                    className={`w-full text-left px-4 py-3 pl-7 hover:bg-brass-soft/20 transition-colors ${
+                      selectedGroup?.id === g.id ? 'bg-brass-soft/30' : ''
+                    }`}
+                  >
+                    <p className="font-semibold text-ink text-sm">{g.name}</p>
+                    <p className="font-mono text-xs text-ink-faint mt-0.5">{g.member_count} members</p>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Group detail */}
           <div className="lg:col-span-2">
             {error && (
-              <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              <div className="mb-4 text-sm text-stamp bg-stamp-soft/60 border border-stamp/30 rounded px-3.5 py-2.5">
                 {error}
               </div>
             )}
             {notice && (
-              <div className="mb-4 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+              <div className="mb-4 text-sm text-[#3E4F38] bg-[#E8EEE4] border border-[#55684A]/30 rounded px-3.5 py-2.5">
                 {notice}
               </div>
             )}
 
             {!selectedGroup ? (
-              <div className="bg-white rounded-xl border border-dashed border-gray-300 p-10 text-center text-gray-500">
-                Select a group from the left to view or manage its members.
+              <div className="border border-dashed border-line rounded-md p-12 text-center text-ink-faint">
+                Select a group from the catalog to view its roster.
               </div>
             ) : (
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-800">{selectedGroup.name}</h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  {selectedGroup.members.length} member{selectedGroup.members.length !== 1 ? 's' : ''}
-                </p>
+              <div className="card-index">
+                <div className="flex items-baseline justify-between">
+                  <h2 className="font-display text-xl text-ink">{selectedGroup.name}</h2>
+                  <span className="font-mono text-xs text-ink-faint">
+                    {selectedGroup.members.length} member{selectedGroup.members.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
 
                 <form onSubmit={handleAddMember} className="mt-5 flex gap-2">
                   <input
                     value={memberIdentifier}
                     onChange={(e) => setMemberIdentifier(e.target.value)}
-                    placeholder="Add member by email or student ID"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                    placeholder="Add by email or student ID"
+                    className="field-input"
                   />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700"
-                  >
-                    Add Member
+                  <button type="submit" className="btn-primary shrink-0">
+                    Add
                   </button>
                 </form>
 
-                <div className="mt-6 divide-y divide-gray-100">
-                  {selectedGroup.members.map((m) => (
-                    <div key={m.id} className="flex items-center justify-between py-3">
-                      <div>
-                        <p className="text-sm font-medium text-gray-800">
-                          {m.name} {m.id === selectedGroup.created_by && (
-                            <span className="ml-1 text-xs text-brand-600 font-normal">(creator)</span>
+                <div className="mt-6">
+                  <p className="ledger-heading mb-3">Roster</p>
+                  <div className="divide-y divide-line">
+                    {selectedGroup.members.map((m) => (
+                      <div key={m.id} className="flex items-center justify-between py-3">
+                        <div className="flex items-baseline gap-2 min-w-0">
+                          <p className="text-sm font-semibold text-ink truncate">{m.name}</p>
+                          {m.id === selectedGroup.created_by && (
+                            <span className="font-mono text-[0.65rem] uppercase tracking-wider text-brass-dark shrink-0">
+                              creator
+                            </span>
                           )}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {m.email} {m.student_id ? `· ${m.student_id}` : ''}
-                        </p>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <p className="font-mono text-xs text-ink-faint">
+                            {m.email} {m.student_id ? `· ${m.student_id}` : ''}
+                          </p>
+                          {selectedGroup.created_by === user.id && m.id !== user.id && (
+                            <button
+                              onClick={() => handleRemoveMember(m.id)}
+                              className="font-mono text-[0.65rem] uppercase tracking-wider text-stamp hover:text-ink"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
                       </div>
-                      {selectedGroup.created_by === user.id && m.id !== user.id && (
-                        <button
-                          onClick={() => handleRemoveMember(m.id)}
-                          className="text-xs font-medium text-red-600 hover:underline"
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

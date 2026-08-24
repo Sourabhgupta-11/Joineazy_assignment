@@ -5,6 +5,15 @@ import Navbar from '../components/Navbar';
 import ProgressBar from '../components/ProgressBar';
 import { useAuth } from '../context/AuthContext';
 
+function StatCard({ label, value, accent }) {
+  return (
+    <div className="card-index !pl-6">
+      <p className="ledger-heading !gap-0 mb-2">{label}</p>
+      <p className={`font-display text-4xl mt-1 ${accent || 'text-ink'}`}>{value}</p>
+    </div>
+  );
+}
+
 export default function StudentDashboard() {
   const { user } = useAuth();
   const [groups, setGroups] = useState([]);
@@ -33,56 +42,43 @@ export default function StudentDashboard() {
     load();
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-2xl font-bold text-gray-800">Welcome, {user?.name?.split(' ')[0]} 👋</h1>
-        <p className="text-gray-500 mt-1">Here's a snapshot of your groups and assignment progress.</p>
+  const confirmedTotal = Object.values(progressByGroup).reduce((sum, p) => sum + (p?.confirmed || 0), 0);
+  const pendingTotal = Object.values(progressByGroup).reduce(
+    (sum, p) => sum + ((p?.total || 0) - (p?.confirmed || 0)),
+    0
+  );
 
-        <div className="grid sm:grid-cols-3 gap-4 mt-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <p className="text-sm text-gray-500">Your Groups</p>
-            <p className="text-3xl font-bold text-gray-800 mt-1">{groups.length}</p>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <p className="text-sm text-gray-500">Confirmed Submissions</p>
-            <p className="text-3xl font-bold text-green-600 mt-1">
-              {Object.values(progressByGroup).reduce((sum, p) => sum + (p?.confirmed || 0), 0)}
-            </p>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <p className="text-sm text-gray-500">Pending Submissions</p>
-            <p className="text-3xl font-bold text-amber-600 mt-1">
-              {Object.values(progressByGroup).reduce(
-                (sum, p) => sum + ((p?.total || 0) - (p?.confirmed || 0)),
-                0
-              )}
-            </p>
-          </div>
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <p className="ledger-heading mb-2">Your ledger</p>
+        <h1 className="font-display text-3xl text-ink">
+          Welcome back, {user?.name?.split(' ')[0]}
+        </h1>
+        <p className="text-ink-soft mt-1.5">A quick look at your groups and what's still outstanding.</p>
+
+        <div className="grid sm:grid-cols-3 gap-4 mt-8">
+          <StatCard label="Your groups" value={groups.length} />
+          <StatCard label="Confirmed" value={confirmedTotal} accent="text-[#55684A]" />
+          <StatCard label="Awaiting" value={pendingTotal} accent="text-brass-dark" />
         </div>
 
-        <div className="mt-8">
+        <div className="mt-10">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">Your Groups</h2>
-            <Link
-              to="/groups"
-              className="text-sm font-medium text-brand-600 hover:underline"
-            >
+            <p className="ledger-heading flex-1">Your groups</p>
+            <Link to="/groups" className="btn-ghost ml-4 shrink-0">
               Manage groups →
             </Link>
           </div>
 
           {loading ? (
-            <p className="text-gray-500 text-sm">Loading...</p>
+            <p className="text-ink-soft text-sm font-mono">Loading…</p>
           ) : groups.length === 0 ? (
-            <div className="bg-white rounded-xl border border-dashed border-gray-300 p-8 text-center">
-              <p className="text-gray-500">You haven't created or joined a group yet.</p>
-              <Link
-                to="/groups"
-                className="inline-block mt-3 px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700"
-              >
-                Create a Group
+            <div className="card-index text-center py-10">
+              <p className="text-ink-soft">You haven't created or joined a group yet.</p>
+              <Link to="/groups" className="btn-primary mt-4 inline-flex">
+                Create a group
               </Link>
             </div>
           ) : (
@@ -90,15 +86,15 @@ export default function StudentDashboard() {
               {groups.map((g) => {
                 const progress = progressByGroup[g.id];
                 return (
-                  <div key={g.id} className="bg-white rounded-xl border border-gray-200 p-5">
+                  <div key={g.id} className="card-index">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-800">{g.name}</h3>
-                      <span className="text-xs text-gray-500">{g.member_count} members</span>
+                      <h3 className="font-display text-lg text-ink">{g.name}</h3>
+                      <span className="font-mono text-xs text-ink-faint">{g.member_count} members</span>
                     </div>
                     <div className="mt-4">
                       <ProgressBar
                         percent={progress?.progressPercent || 0}
-                        label={`${progress?.confirmed || 0} of ${progress?.total || 0} assignments confirmed`}
+                        label={`${progress?.confirmed || 0} of ${progress?.total || 0} confirmed`}
                       />
                     </div>
                   </div>

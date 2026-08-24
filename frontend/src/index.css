@@ -1,7 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+@layer base {
+  body {
+    @apply bg-paper text-ink font-sans;
+    background-image: radial-gradient(rgba(28, 43, 69, 0.14) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  ::selection {
+    background: #b8842e;
+    color: #fffdf8;
+  }
+
+  /* Visible keyboard focus everywhere, styled to match the ledger identity */
+  :focus-visible {
+    outline: 2px solid #b8842e;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Index-card surface: the base "container" motif used across the app.
+     A small brass pin sits in the top-left corner, like a card catalog entry. */
+  .card-index {
+    @apply relative bg-card border border-line rounded-md;
+    padding: 1.5rem 1.25rem 1.25rem 1.75rem;
+  }
+  .card-index::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #b8842e;
+    box-shadow: 0 0 0 2px #fffdf8, 0 0 0 3px rgba(28, 43, 69, 0.14);
+  }
+
+  /* Primary button: hard offset shadow instead of a soft blur, like a lifted card.
+     Presses flat on click. */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-ink text-paper font-sans font-semibold
+      text-sm rounded px-5 py-2.5 shadow-card transition-all duration-150;
+  }
+  .btn-primary:hover:not(:disabled) {
+    @apply shadow-card-hover;
+    transform: translate(-2px, -2px);
+  }
+  .btn-primary:active:not(:disabled) {
+    box-shadow: 1px 1px 0 0 rgba(28, 43, 69, 0.9);
+    transform: translate(1px, 1px);
+  }
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink font-sans font-semibold
+      text-sm rounded px-5 py-2.5 border border-ink/30 transition-colors duration-150 hover:border-ink hover:bg-ink/[0.03];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-brass-dark
+      hover:text-ink transition-colors duration-150;
+  }
+
+  .field-label {
+    @apply block text-xs font-mono font-medium uppercase tracking-wider text-ink-soft mb-1.5;
+  }
+
+  .field-input {
+    @apply w-full px-3.5 py-2.5 bg-card border border-line rounded text-sm text-ink
+      placeholder:text-ink-faint focus:border-brass outline-none transition-colors;
+  }
+
+  /* The signature element: a rubber-stamp badge for confirmed submissions.
+     Rotated, double-ringed, monospace caps — reads as ink pressed onto paper. */
+  .stamp-confirmed {
+    @apply inline-flex items-center gap-1.5 font-mono text-[0.68rem] font-semibold uppercase tracking-widest
+      text-stamp border-2 border-stamp rounded px-2.5 py-1;
+    background: rgba(167, 59, 59, 0.04);
+    box-shadow: inset 0 0 0 2px rgba(167, 59, 59, 0.3);
+    transform: rotate(-2.5deg);
+  }
+
+  /* Pending: an un-stamped ledger line, dashed, waiting for ink. */
+  .stamp-pending {
+    @apply inline-flex items-center gap-1.5 font-mono text-[0.68rem] font-semibold uppercase tracking-widest
+      text-brass-dark border-2 border-dashed border-brass/60 rounded px-2.5 py-1 bg-brass-soft/40;
+  }
+
+  /* Ledger-style section heading: small caps eyebrow + rule */
+  .ledger-heading {
+    @apply flex items-center gap-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft;
+  }
+  .ledger-heading::after {
+    content: '';
+    @apply flex-1 h-px bg-line;
+  }
 }
