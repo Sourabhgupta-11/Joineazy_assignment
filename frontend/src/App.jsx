@@ -8,6 +8,9 @@ import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
 import GroupManagement from './pages/GroupManagement';
 import Assignments from './pages/Assignments';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminAssignments from './pages/AdminAssignments';
+import AdminGroups from './pages/AdminGroups';
 
 export default function App() {
   const { user } = useAuth();
@@ -46,6 +49,30 @@ export default function App() {
         }
       />
 
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/assignments"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminAssignments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/groups"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminGroups />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
