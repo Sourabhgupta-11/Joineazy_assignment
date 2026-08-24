@@ -3,6 +3,10 @@ const express = require('express');
 const cors = require('cors');
 
 const authRoutes = require('./routes/auth.routes');
+const groupRoutes = require('./routes/group.routes');
+const assignmentRoutes = require('./routes/assignment.routes');
+const submissionRoutes = require('./routes/submission.routes');
+const adminRoutes = require('./routes/admin.routes');
 
 const app = express();
 
@@ -14,6 +18,10 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/submissions', submissionRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
