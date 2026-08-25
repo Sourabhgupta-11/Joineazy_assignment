@@ -184,7 +184,7 @@ The raw SQL is in [`backend/src/schema.sql`](./backend/src/schema.sql).
 **Prerequisites:** Docker & Docker Compose installed.
 
 ```bash
-git clone <your-repo-url>
+git clone "https://github.com/Sourabhgupta-11/Joineazy_assignment"
 docker compose up --build
 ```
 
