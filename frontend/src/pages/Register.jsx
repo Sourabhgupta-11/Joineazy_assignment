@@ -31,7 +31,6 @@ export default function Register() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left: identity panel */}
       <div className="hidden lg:flex flex-col justify-between bg-ink text-paper p-12 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.07]"
@@ -42,20 +41,24 @@ export default function Register() {
         />
         <div className="relative">
           <span className="w-11 h-11 rounded-full border-2 border-paper/70 flex items-center justify-center font-display italic text-base">
-            JE
+            GS
           </span>
         </div>
 
         <div className="relative">
-          <p className="ledger-heading text-paper/50 mb-4">GroupSync · Class Ledger</p>
+          <p className="ledger-heading text-paper/50 mb-4">
+            GROUPSYNC · CLASS LEDGER
+          </p>
+
           <h1 className="font-display text-4xl leading-[1.15] max-w-md">
-            Two roles.
+            Built for every
             <br />
-            One <span className="italic text-brass">shared</span> ledger.
+            <span className="italic text-brass">side</span> of group work.
           </h1>
+
           <p className="text-paper/60 text-sm mt-6 max-w-sm leading-relaxed">
-            Students form groups, add classmates, and confirm hand-ins. Professors post the work and
-            watch it get checked off.
+            Students create groups and manage submissions. Professors create
+            assignments and track progress—all in one place.
           </p>
         </div>
 
@@ -66,12 +69,11 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Right: form */}
       <div className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-2.5 mb-8">
             <span className="w-9 h-9 rounded-full border-2 border-ink flex items-center justify-center font-display italic text-sm">
-              JE
+              GS
             </span>
             <span className="font-display text-lg">GroupSync</span>
           </div>

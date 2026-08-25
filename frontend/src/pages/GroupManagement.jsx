@@ -81,7 +81,6 @@ export default function GroupManagement() {
         <p className="text-ink-soft mt-1.5">Create a group and add classmates by email or student ID.</p>
 
         <div className="grid lg:grid-cols-3 gap-6 mt-8">
-          {/* Group list + create form */}
           <div className="lg:col-span-1 space-y-4">
             <form onSubmit={handleCreateGroup} className="card-index">
               <label className="field-label">New group</label>
@@ -117,7 +116,6 @@ export default function GroupManagement() {
             </div>
           </div>
 
-          {/* Group detail */}
           <div className="lg:col-span-2">
             {error && (
               <div className="mb-4 text-sm text-stamp bg-stamp-soft/60 border border-stamp/30 rounded px-3.5 py-2.5">
