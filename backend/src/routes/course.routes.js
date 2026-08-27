@@ -9,7 +9,7 @@ const {
   getCourseStudents,
   getCourseAnalytics,
 } = require('../controllers/course.controller');
-const { createCourseRules, enrollCourseRules, handleValidation } = require('../middleware/validators');
+const { createCourseRules, enrollCourseRules, handleValidation } = require('../middleware/validator');
 
 router.use(authenticate);
 

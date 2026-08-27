@@ -11,7 +11,7 @@ const {
   createAssignmentRules,
   listAssignmentsQueryRules,
   handleValidation,
-} = require('../middleware/validators');
+} = require('../middleware/validator');
 
 router.use(authenticate);
 

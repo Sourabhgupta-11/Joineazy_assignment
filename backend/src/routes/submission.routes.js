@@ -16,7 +16,7 @@ const {
   reviewSubmissionRules,
   reviewIndividualSubmissionRules,
   handleValidation,
-} = require('../middleware/validators');
+} = require('../middleware/validator');
 
 router.use(authenticate);
 
