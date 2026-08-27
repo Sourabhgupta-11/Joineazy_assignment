@@ -74,6 +74,8 @@
       placeholder:text-ink-faint focus:border-brass outline-none transition-colors;
   }
 
+  /* The signature element: a rubber-stamp badge for confirmed submissions.
+     Rotated, double-ringed, monospace caps — reads as ink pressed onto paper. */
   .stamp-confirmed {
     @apply inline-flex items-center gap-1.5 font-mono text-[0.68rem] font-semibold uppercase tracking-widest
       text-stamp border-2 border-stamp rounded px-2.5 py-1;
@@ -82,16 +84,70 @@
     transform: rotate(-2.5deg);
   }
 
+  /* Pending: an un-stamped ledger line, dashed, waiting for ink. */
   .stamp-pending {
     @apply inline-flex items-center gap-1.5 font-mono text-[0.68rem] font-semibold uppercase tracking-widest
       text-brass-dark border-2 border-dashed border-brass/60 rounded px-2.5 py-1 bg-brass-soft/40;
   }
 
+  /* Ledger-style section heading: small caps eyebrow + rule */
   .ledger-heading {
     @apply flex items-center gap-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft;
   }
   .ledger-heading::after {
     content: '';
     @apply flex-1 h-px bg-line;
+  }
+}
+
+@layer utilities {
+  /* Spinner for loading states (login/register buttons, async actions) */
+  @keyframes spin-dash {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .spinner-ring {
+    stroke-dasharray: 60 40;
+    stroke-dashoffset: 100;
+    animation: spin-dash 0.9s linear infinite, spin 0.9s linear infinite;
+    transform-origin: center;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes stamp-pop {
+    0% {
+      transform: rotate(-2.5deg) scale(0.6);
+      opacity: 0;
+    }
+    60% {
+      transform: rotate(-2.5deg) scale(1.08);
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(-2.5deg) scale(1);
+      opacity: 1;
+    }
+  }
+  .animate-stamp-pop {
+    animation: stamp-pop 0.35s ease-out;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-up {
+    animation: fade-up 0.25s ease-out;
   }
 }
