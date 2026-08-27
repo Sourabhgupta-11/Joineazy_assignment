@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-// POST /api/groups  (student creates a group; creator is auto-added as a member)
 async function createGroup(req, res) {
   const client = await db.pool.connect();
   try {
@@ -33,7 +32,6 @@ async function createGroup(req, res) {
   }
 }
 
-// GET /api/groups/mine  (groups the logged-in student belongs to)
 async function myGroups(req, res) {
   try {
     const result = await db.query(
@@ -52,7 +50,6 @@ async function myGroups(req, res) {
   }
 }
 
-// GET /api/groups  (admin: list all groups with member details)
 async function listAllGroups(req, res) {
   try {
     const groupsResult = await db.query(`SELECT * FROM groups ORDER BY created_at DESC`);
@@ -75,7 +72,6 @@ async function listAllGroups(req, res) {
   }
 }
 
-// GET /api/groups/:id  (view a single group with members - must be a member or admin)
 async function getGroup(req, res) {
   try {
     const { id } = req.params;
@@ -110,7 +106,6 @@ async function getGroup(req, res) {
   }
 }
 
-// PUT /api/groups/:id  (rename a group; only the creator can)
 async function renameGroup(req, res) {
   try {
     const { id } = req.params;
@@ -142,8 +137,6 @@ async function renameGroup(req, res) {
   }
 }
 
-// DELETE /api/groups/:id  (delete a group entirely; only the creator can)
-// Cascades to group_members, assignment_groups, and submissions via FK ON DELETE CASCADE.
 async function deleteGroup(req, res) {
   try {
     const { id } = req.params;
@@ -166,19 +159,15 @@ async function deleteGroup(req, res) {
   }
 }
 
-// POST /api/groups/:id/members  (add a member by email or studentId)
-// A student may only belong to one group at a time, so this rejects adding
-// someone who is already a member of a different group.
 async function addMember(req, res) {
   try {
     const { id } = req.params;
-    const { identifier } = req.body; // email or student_id
+    const { identifier } = req.body; 
 
     if (!identifier || !identifier.trim()) {
       return res.status(400).json({ message: 'Provide a student email or student ID to add.' });
     }
 
-    // Only existing members (of a student group) may add others
     const membership = await db.query(
       'SELECT 1 FROM group_members WHERE group_id = $1 AND user_id = $2',
       [id, req.user.id]
@@ -207,8 +196,6 @@ async function addMember(req, res) {
       return res.status(409).json({ message: 'This student is already a member of this group.' });
     }
 
-    // A student can only be in one group at a time. If they're already a member of
-    // some other group, surface which one so the person adding them understands why.
     const inOtherGroup = await db.query(
       `SELECT g.name FROM group_members gm
        JOIN groups g ON g.id = gm.group_id
@@ -231,7 +218,6 @@ async function addMember(req, res) {
   }
 }
 
-// DELETE /api/groups/:id/members/:userId  (remove a member; only the group creator can)
 async function removeMember(req, res) {
   try {
     const { id, userId } = req.params;

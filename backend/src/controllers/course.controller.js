@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const db = require('../config/db');
 
-// Generates a short, human-shareable join code like "PHYS-4K9X".
 function generateCourseCode(name) {
   const prefix = (name || 'CRS')
     .replace(/[^a-zA-Z]/g, '')
@@ -12,7 +11,6 @@ function generateCourseCode(name) {
   return `${prefix}-${suffix}`;
 }
 
-// POST /api/courses  (professor creates a course)
 async function createCourse(req, res) {
   try {
     const { name, description } = req.body;
@@ -20,7 +18,6 @@ async function createCourse(req, res) {
       return res.status(400).json({ message: 'Course name is required.' });
     }
 
-    // Retry a couple of times in the rare case of a code collision.
     for (let attempt = 0; attempt < 5; attempt++) {
       const code = generateCourseCode(name);
       try {
@@ -31,7 +28,7 @@ async function createCourse(req, res) {
         );
         return res.status(201).json({ course: result.rows[0] });
       } catch (err) {
-        if (err.code === '23505') continue; // unique_violation on code, retry
+        if (err.code === '23505') continue; 
         throw err;
       }
     }
@@ -42,7 +39,6 @@ async function createCourse(req, res) {
   }
 }
 
-// GET /api/courses/mine  (professor: courses they teach; student: courses they're enrolled in)
 async function myCourses(req, res) {
   try {
     if (req.user.role === 'admin') {
@@ -75,7 +71,6 @@ async function myCourses(req, res) {
   }
 }
 
-// POST /api/courses/enroll  (student self-enrolls using a course join code)
 async function enrollByCode(req, res) {
   try {
     const { code } = req.body;
@@ -109,7 +104,6 @@ async function enrollByCode(req, res) {
   }
 }
 
-// GET /api/courses/:id  (course detail; professor who owns it, or an enrolled student)
 async function getCourse(req, res) {
   try {
     const { id } = req.params;
@@ -140,7 +134,6 @@ async function getCourse(req, res) {
   }
 }
 
-// GET /api/courses/:id/students  (professor: roster with basic analytics)
 async function getCourseStudents(req, res) {
   try {
     const { id } = req.params;
@@ -168,7 +161,6 @@ async function getCourseStudents(req, res) {
   }
 }
 
-// GET /api/courses/:id/analytics  (professor: submission stats for this course's assignments)
 async function getCourseAnalytics(req, res) {
   try {
     const { id } = req.params;
