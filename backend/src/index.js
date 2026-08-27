@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const { generalLimiter } = require('./middleware/rateLimit');
 
 const authRoutes = require('./routes/auth.routes');
+const courseRoutes = require('./routes/course.routes');
 const groupRoutes = require('./routes/group.routes');
 const assignmentRoutes = require('./routes/assignment.routes');
 const submissionRoutes = require('./routes/submission.routes');
@@ -33,18 +34,19 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found.'});
+  res.status(404).json({message: 'Route not found'});
 });
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
-  res.status(err.status || 500).json({ message: 'Internal server error.'});
+  res.status(err.status || 500).json({message: 'Internal server error'});
 });
 
 const PORT = process.env.PORT || 5000;
