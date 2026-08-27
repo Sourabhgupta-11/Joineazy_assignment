@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Loader from '../components/Loader';
 
 export default function Register() {
   const { register } = useAuth();
@@ -46,19 +47,15 @@ export default function Register() {
         </div>
 
         <div className="relative">
-          <p className="ledger-heading text-paper/50 mb-4">
-            GROUPSYNC · CLASS LEDGER
-          </p>
-
+          <p className="ledger-heading text-paper/50 mb-4">Joineazy · Class Ledger</p>
           <h1 className="font-display text-4xl leading-[1.15] max-w-md">
-            Built for every
+            Two roles.
             <br />
-            <span className="italic text-brass">side</span> of group work.
+            One <span className="italic text-brass">shared</span> ledger.
           </h1>
-
           <p className="text-paper/60 text-sm mt-6 max-w-sm leading-relaxed">
-            Students create groups and manage submissions. Professors create
-            assignments and track progress—all in one place.
+            Students form groups, add classmates, and confirm hand-ins. Professors post the work and
+            watch it get checked off.
           </p>
         </div>
 
@@ -69,13 +66,14 @@ export default function Register() {
         </div>
       </div>
 
+      {/* Right: form */}
       <div className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-2.5 mb-8">
             <span className="w-9 h-9 rounded-full border-2 border-ink flex items-center justify-center font-display italic text-sm">
               GS
             </span>
-            <span className="font-display text-lg">GroupSync</span>
+            <span className="font-display text-lg">Joineazy</span>
           </div>
 
           <p className="ledger-heading mb-2">Register</p>
@@ -166,6 +164,7 @@ export default function Register() {
             </div>
 
             <button type="submit" disabled={loading} className="btn-primary w-full !py-3 mt-2">
+              {loading && <Loader size={15} light />}
               {loading ? 'Creating entry…' : 'Create account'}
             </button>
           </form>

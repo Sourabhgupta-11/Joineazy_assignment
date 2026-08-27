@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Loader from '../components/Loader';
 
 export default function Login() {
   const { login } = useAuth();
@@ -40,28 +41,24 @@ export default function Login() {
         </div>
 
         <div className="relative">
-          <p className="ledger-heading text-paper/50 mb-4">
-            GROUPSYNC · CLASS LEDGER
-          </p>
-
+          <p className="ledger-heading text-paper/50 mb-4">Joineazy · Class Ledger</p>
           <h1 className="font-display text-4xl leading-[1.15] max-w-md">
-            Group work,
+            Every group.
             <br />
-            without losing
+            Every hand-in.
             <br />
-            <span className="italic text-brass">track</span> of it.
+            <span className="italic text-brass">Stamped</span> when it&apos;s done.
           </h1>
-
           <p className="text-paper/60 text-sm mt-6 max-w-sm leading-relaxed">
-            Create groups, manage assignments, and keep every submission visible.
-            Students stay organised while professors can track progress in one place.
+            Students form their own groups and confirm submissions with one final stamp. Professors
+            watch the whole class ledger fill in, live.
           </p>
         </div>
 
         <div className="relative flex items-center gap-6 text-xs font-mono uppercase tracking-widest text-paper/40">
-          <span>Group</span>
+          <span>Roll call</span>
           <span className="w-1 h-1 rounded-full bg-paper/30" />
-          <span>Submit</span>
+          <span>Confirm</span>
           <span className="w-1 h-1 rounded-full bg-paper/30" />
           <span>Track</span>
         </div>
@@ -73,7 +70,7 @@ export default function Login() {
             <span className="w-9 h-9 rounded-full border-2 border-ink flex items-center justify-center font-display italic text-sm">
               GS
             </span>
-            <span className="font-display text-lg">groupSync</span>
+            <span className="font-display text-lg">Joineazy</span>
           </div>
 
           <p className="ledger-heading mb-2">Sign in</p>
@@ -110,6 +107,7 @@ export default function Login() {
               />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full !py-3 mt-2">
+              {loading && <Loader size={15} light />}
               {loading ? 'Signing in…' : 'Log in'}
             </button>
           </form>
