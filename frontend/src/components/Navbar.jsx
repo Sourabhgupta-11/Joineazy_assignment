@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
         <Link to={user?.role === 'admin' ? '/admin' : '/dashboard'} className="flex items-center gap-2.5">
           <span className="w-9 h-9 rounded-full border-2 border-ink flex items-center justify-center font-display italic text-sm text-ink">
-            GS
+            GC
           </span>
           <span className="font-display text-lg text-ink">GroupSync</span>
         </Link>
@@ -40,15 +40,14 @@ export default function Navbar() {
           <div className="flex items-center gap-5">
             {user.role === 'student' && (
               <>
-                <NavLink to="/dashboard">Dashboard</NavLink>
+                <NavLink to="/dashboard">Courses</NavLink>
                 <NavLink to="/groups">Groups</NavLink>
-                <NavLink to="/assignments">Assignments</NavLink>
               </>
             )}
             {user.role === 'admin' && (
               <>
-                <NavLink to="/admin">Analytics</NavLink>
-                <NavLink to="/admin/assignments">Assignments</NavLink>
+                <NavLink to="/admin">Courses</NavLink>
+                <NavLink to="/admin/overview">Overview</NavLink>
                 <NavLink to="/admin/groups">Groups</NavLink>
               </>
             )}

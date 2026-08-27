@@ -6,10 +6,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
+import CourseAssignments from './pages/CourseAssignments';
 import GroupManagement from './pages/GroupManagement';
-import Assignments from './pages/Assignments';
 import AdminDashboard from './pages/AdminDashboard';
-import AdminAssignments from './pages/AdminAssignments';
+import AdminOverview from './pages/AdminOverview';
+import ProfessorCourseDetail from './pages/ProfessorCourseDetail';
 import AdminGroups from './pages/AdminGroups';
 
 export default function App() {
@@ -33,18 +34,18 @@ export default function App() {
         }
       />
       <Route
-        path="/groups"
+        path="/courses/:id"
         element={
           <ProtectedRoute allowedRoles={['student']}>
-            <GroupManagement />
+            <CourseAssignments />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/assignments"
+        path="/groups"
         element={
           <ProtectedRoute allowedRoles={['student']}>
-            <Assignments />
+            <GroupManagement />
           </ProtectedRoute>
         }
       />
@@ -58,10 +59,18 @@ export default function App() {
         }
       />
       <Route
-        path="/admin/assignments"
+        path="/admin/overview"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <AdminAssignments />
+            <AdminOverview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/courses/:id"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ProfessorCourseDetail />
           </ProtectedRoute>
         }
       />
