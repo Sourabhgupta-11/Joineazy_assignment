@@ -8,33 +8,49 @@ const {
   getGroup,
   renameGroup,
   deleteGroup,
-  addMember,
   removeMember,
 } = require('../controllers/group.controller');
 const {
+  createInvite,
+  listGroupInvites,
+  cancelInvite,
+  myInvites,
+  acceptInvite,
+  declineInvite,
+} = require('../controllers/groupInvite.controller');
+const {
   createGroupRules,
-  addMemberRules,
+  inviteRules,
   groupIdParamRule,
   renameGroupRules,
   handleValidation,
-} = require('../middleware/validator');
+} = require('../middleware/validators');
 
 router.use(authenticate);
 
 router.post('/', authorize('student'), createGroupRules, handleValidation, createGroup);
 router.get('/mine', authorize('student'), myGroups);
 router.get('/', authorize('admin'), listAllGroups);
+
+router.get('/invites/mine', authorize('student'), myInvites);
+router.post('/invites/:inviteId/accept', authorize('student'), acceptInvite);
+router.post('/invites/:inviteId/decline', authorize('student'), declineInvite);
+
 router.get('/:id', groupIdParamRule, handleValidation, getGroup);
 router.put('/:id', authorize('student'), renameGroupRules, handleValidation, renameGroup);
 router.delete('/:id', authorize('student'), groupIdParamRule, handleValidation, deleteGroup);
+
 router.post(
-  '/:id/members',
+  '/:id/invites',
   authorize('student'),
   groupIdParamRule,
-  addMemberRules,
+  inviteRules,
   handleValidation,
-  addMember
+  createInvite
 );
+router.get('/:id/invites', authorize('student'), groupIdParamRule, handleValidation, listGroupInvites);
+router.delete('/:id/invites/:inviteId', authorize('student'), groupIdParamRule, handleValidation, cancelInvite);
+
 router.delete('/:id/members/:userId', authorize('student'), groupIdParamRule, handleValidation, removeMember);
 
 module.exports = router;

@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS course_enrollments (
         UNIQUE (course_id, student_id)
 );
 
+
 CREATE TABLE IF NOT EXISTS groups (
     id              SERIAL PRIMARY KEY,
     name            VARCHAR(150)  NOT NULL,
@@ -66,6 +67,29 @@ CREATE TABLE IF NOT EXISTS group_members (
         UNIQUE (group_id, user_id)
 );
 
+CREATE TABLE IF NOT EXISTS group_invites (
+    id                SERIAL PRIMARY KEY,
+    group_id          INTEGER       NOT NULL,
+    invited_user_id   INTEGER       NOT NULL,
+    invited_by        INTEGER       NOT NULL,
+    status            VARCHAR(10)   NOT NULL DEFAULT 'pending',
+    created_at        TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    responded_at      TIMESTAMP,
+
+    CONSTRAINT fk_invite_group
+        FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE,
+    CONSTRAINT fk_invite_user
+        FOREIGN KEY (invited_user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_invite_inviter
+        FOREIGN KEY (invited_by) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT chk_invite_status
+        CHECK (status IN ('pending', 'accepted', 'declined'))
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_invite_one_pending_per_target
+    ON group_invites (group_id, invited_user_id)
+    WHERE status = 'pending';
+
 CREATE TABLE IF NOT EXISTS assignments (
     id              SERIAL PRIMARY KEY,
     course_id       INTEGER,
@@ -89,7 +113,6 @@ CREATE TABLE IF NOT EXISTS assignments (
         CHECK (submission_type IN ('individual', 'group'))
 );
 
-
 CREATE TABLE IF NOT EXISTS assignment_groups (
     id              SERIAL PRIMARY KEY,
     assignment_id   INTEGER       NOT NULL,
@@ -102,6 +125,7 @@ CREATE TABLE IF NOT EXISTS assignment_groups (
     CONSTRAINT uq_ag_assignment_group
         UNIQUE (assignment_id, group_id)
 );
+
 
 CREATE TABLE IF NOT EXISTS submissions (
     id              SERIAL PRIMARY KEY,
@@ -142,9 +166,10 @@ CREATE TABLE IF NOT EXISTS submissions (
         )
 );
 
-
 CREATE INDEX IF NOT EXISTS ix_group_members_by_group       ON group_members (group_id);
 CREATE INDEX IF NOT EXISTS ix_group_members_by_user         ON group_members (user_id);
+CREATE INDEX IF NOT EXISTS ix_group_invites_by_group        ON group_invites (group_id);
+CREATE INDEX IF NOT EXISTS ix_group_invites_by_user          ON group_invites (invited_user_id);
 CREATE INDEX IF NOT EXISTS ix_assignment_groups_by_assign    ON assignment_groups (assignment_id);
 CREATE INDEX IF NOT EXISTS ix_submissions_by_assignment      ON submissions (assignment_id);
 CREATE INDEX IF NOT EXISTS ix_submissions_by_group           ON submissions (group_id);
@@ -153,6 +178,7 @@ CREATE INDEX IF NOT EXISTS ix_enrollments_by_student         ON course_enrollmen
 CREATE INDEX IF NOT EXISTS ix_courses_by_creator             ON courses (created_by);
 
 COMMIT;
+
 
 ALTER TABLE assignments ADD COLUMN IF NOT EXISTS course_id INTEGER;
 ALTER TABLE assignments ADD COLUMN IF NOT EXISTS submission_type VARCHAR(12) NOT NULL DEFAULT 'group';

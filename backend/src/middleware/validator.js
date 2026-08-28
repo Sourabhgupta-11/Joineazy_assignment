@@ -34,7 +34,7 @@ const createGroupRules = [
   body('name').trim().isLength({ min: 2, max: 150 }).withMessage('Group name must be 2-150 characters.'),
 ];
 
-const addMemberRules = [
+const inviteRules = [
   body('identifier')
     .trim()
     .isLength({ min: 1, max: 150 })
@@ -129,7 +129,7 @@ module.exports = {
   registerRules,
   loginRules,
   createGroupRules,
-  addMemberRules,
+  inviteRules,
   groupIdParamRule,
   renameGroupRules,
   createCourseRules,
