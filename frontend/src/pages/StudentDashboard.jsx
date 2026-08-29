@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import CourseCard from '../components/CourseCard';
@@ -13,15 +14,21 @@ export default function StudentDashboard() {
   const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [pendingInviteCount, setPendingInviteCount] = useState(0);
 
   const loadCourses = async () => {
     const { data } = await api.get('/courses/mine');
     setCourses(data.courses);
   };
 
+  const loadInviteCount = async () => {
+    const { data } = await api.get('/groups/invites/mine');
+    setPendingInviteCount(data.invites.length);
+  };
+
   useEffect(() => {
     (async () => {
-      await loadCourses();
+      await Promise.all([loadCourses(), loadInviteCount()]);
       setLoading(false);
     })();
   }, []);
@@ -51,6 +58,18 @@ export default function StudentDashboard() {
         <p className="ledger-heading mb-2">Your ledger</p>
         <h1 className="font-display text-3xl text-ink">Welcome back, {user?.name?.split(' ')[0]}</h1>
         <p className="text-ink-soft mt-1.5">Your enrolled courses. Open one to see its assignments.</p>
+
+        {!loading && pendingInviteCount > 0 && (
+          <Link
+            to="/groups"
+            className="mt-5 flex items-center justify-between border border-brass/50 bg-brass-soft/40 rounded-md px-4 py-3 hover:bg-brass-soft/60 transition-colors animate-fade-up"
+          >
+            <span className="text-sm text-brass-dark font-semibold">
+              You have {pendingInviteCount} pending group invite{pendingInviteCount !== 1 ? 's' : ''}.
+            </span>
+            <span className="font-mono text-xs text-brass-dark">Review →</span>
+          </Link>
+        )}
 
         <form onSubmit={handleEnroll} className="card-index mt-6 max-w-md">
           <label className="field-label">Join a course</label>

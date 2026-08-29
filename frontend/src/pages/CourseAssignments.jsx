@@ -4,6 +4,7 @@ import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import AssignmentCard from '../components/AssignmentCard';
 import SubmissionConfirmModal from '../components/SubmissionConfirmModal';
+import FeedbackModal from '../components/FeedbackModal';
 import Loader from '../components/Loader';
 import { useAuth } from '../context/AuthContext';
 
@@ -15,6 +16,7 @@ export default function CourseAssignments() {
   const [myGroup, setMyGroup] = useState(null); // the student's single group, if any
   const [submissionMap, setSubmissionMap] = useState({});
   const [modalAssignment, setModalAssignment] = useState(null);
+  const [feedbackTarget, setFeedbackTarget] = useState(null); // { assignmentTitle, feedback }
   const [confirming, setConfirming] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -150,6 +152,9 @@ export default function CourseAssignments() {
                     submission={submissionMap[a.id]}
                     disabled={!canAct}
                     onConfirmClick={() => setModalAssignment(a)}
+                    onViewFeedback={(sub) =>
+                      setFeedbackTarget({ assignmentTitle: a.title, feedback: sub.feedback })
+                    }
                   />
                   {isGroupType && !myGroup && (
                     <p className="text-xs text-brass-dark mt-1.5 px-1">
@@ -174,6 +179,14 @@ export default function CourseAssignments() {
           loading={confirming}
           onConfirm={handleConfirm}
           onClose={() => setModalAssignment(null)}
+        />
+      )}
+
+      {feedbackTarget && (
+        <FeedbackModal
+          assignmentTitle={feedbackTarget.assignmentTitle}
+          feedback={feedbackTarget.feedback}
+          onClose={() => setFeedbackTarget(null)}
         />
       )}
     </div>

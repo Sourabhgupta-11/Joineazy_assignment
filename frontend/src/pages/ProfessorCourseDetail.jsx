@@ -21,7 +21,7 @@ function ReviewBadge({ status, reviewStatus }) {
     return <span className="stamp-pending !text-[0.6rem] !py-0.5">Awaiting</span>;
   }
   if (reviewStatus === 'approved') {
-    return <span className="stamp-confirmed !text-[0.6rem] !py-0.5">✓ Approved</span>;
+    return <span className="stamp-confirmed !text-[0.6rem] !py-0.5">✓ Reviewed and correct</span>;
   }
   if (reviewStatus === 'rejected') {
     return (
@@ -32,7 +32,7 @@ function ReviewBadge({ status, reviewStatus }) {
   }
   return (
     <span className="inline-flex items-center font-mono text-[0.6rem] font-semibold uppercase tracking-widest text-brass-dark border border-brass/50 rounded px-2.5 py-0.5 bg-brass-soft/40">
-      Submitted · unreviewed
+      Submitted · under review
     </span>
   );
 }
