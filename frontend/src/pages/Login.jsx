@@ -41,24 +41,28 @@ export default function Login() {
         </div>
 
         <div className="relative">
-          <p className="ledger-heading text-paper/50 mb-4">Joineazy · Class Ledger</p>
+          <p className="ledger-heading text-paper/50 mb-4">
+            GroupSync · Class Ledger
+          </p>
+
           <h1 className="font-display text-4xl leading-[1.15] max-w-md">
-            Every group.
+            Keep every group
             <br />
-            Every hand-in.
+            and every <span className="italic text-brass">submission</span>
             <br />
-            <span className="italic text-brass">Stamped</span> when it&apos;s done.
+            on track.
           </h1>
+
           <p className="text-paper/60 text-sm mt-6 max-w-sm leading-relaxed">
-            Students form their own groups and confirm submissions with one final stamp. Professors
-            watch the whole class ledger fill in, live.
+            Students create groups, manage members, and confirm their assignment
+            submissions. Professors can see the progress of every group in one place.
           </p>
         </div>
 
         <div className="relative flex items-center gap-6 text-xs font-mono uppercase tracking-widest text-paper/40">
-          <span>Roll call</span>
+          <span>Group</span>
           <span className="w-1 h-1 rounded-full bg-paper/30" />
-          <span>Confirm</span>
+          <span>Submit</span>
           <span className="w-1 h-1 rounded-full bg-paper/30" />
           <span>Track</span>
         </div>
@@ -70,7 +74,7 @@ export default function Login() {
             <span className="w-9 h-9 rounded-full border-2 border-ink flex items-center justify-center font-display italic text-sm">
               GS
             </span>
-            <span className="font-display text-lg">Joineazy</span>
+            <span className="font-display text-lg">GroupSync</span>
           </div>
 
           <p className="ledger-heading mb-2">Sign in</p>

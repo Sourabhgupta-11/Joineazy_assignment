@@ -47,15 +47,19 @@ export default function Register() {
         </div>
 
         <div className="relative">
-          <p className="ledger-heading text-paper/50 mb-4">Joineazy · Class Ledger</p>
+          <p className="ledger-heading text-paper/50 mb-4">
+            GroupSync · Class Ledger
+          </p>
+
           <h1 className="font-display text-4xl leading-[1.15] max-w-md">
-            Two roles.
+            Keep your group
             <br />
-            One <span className="italic text-brass">shared</span> ledger.
+            work <span className="italic text-brass">on track.</span>
           </h1>
+
           <p className="text-paper/60 text-sm mt-6 max-w-sm leading-relaxed">
-            Students form groups, add classmates, and confirm hand-ins. Professors post the work and
-            watch it get checked off.
+            Students create groups, add members, and confirm their submissions.
+            Professors can post assignments and keep track of everyone&apos;s progress.
           </p>
         </div>
 
@@ -73,7 +77,7 @@ export default function Register() {
             <span className="w-9 h-9 rounded-full border-2 border-ink flex items-center justify-center font-display italic text-sm">
               GS
             </span>
-            <span className="font-display text-lg">Joineazy</span>
+            <span className="font-display text-lg">GroupSync</span>
           </div>
 
           <p className="ledger-heading mb-2">Register</p>
